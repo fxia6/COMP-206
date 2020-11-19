@@ -1,0 +1,26 @@
+#Do not include a sh-bang (#!/bin/bash) in this script.
+#Do not write code outside of this function body
+function fname()
+{
+
+# if no argument is passed, set FNAME to ERROR and return 1
+if [ $# -eq 0 ]
+then
+	export FNAME="ERROR"
+	return 1
+fi
+
+# temporary variable to store the result through looking for the userid
+temp=$(pinky | grep $1)
+# if the userid is not round among sessions, set FNAME to NOTFOUND and return 0
+if [ ! "$temp" ]
+then
+	export FNAME="NOTFOUND"
+	return 0
+else
+# is the userid found, set FNAME to the first name of the user and return 0
+	export FNAME=$(pinky $1 | tail -n1 | awk '{print $2}')
+	return 0
+fi
+
+}
